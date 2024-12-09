@@ -24,13 +24,6 @@ The following instructions are for ROS 2, tested on Humble on Ubuntu 22.02.
 sudo apt install gstreamer1.0-tools gstreamer1.0-libav libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-good1.0-dev gstreamer1.0-plugins-good gstreamer1.0-plugins-base
 ```
 
-##### ROS package
-* rgbd_launch
-
-```bash
-sudo apt-get install ros-kinetic-rgbd-launch
-```
-
 #### Building
 
 To build from source, clone the latest version from this repository into your catkin workspace and compile the package.
@@ -67,9 +60,17 @@ ros2 launch kinova_vision kinova_vision.launch.py launch_depth:=false
 
 Additional information is available below.
 
+Please note that establishing a connection between the computer and the camera may require several attempts, so please be patient. Sometimes you may need to restart both the robot and the connected computer to successfully establish the connection.
+
 ### Start rviz to view both cameras
 
-*TODO* Add `rviz2` save configurations and instructions for viewing camera streams.
+Start rviz using the following command:
+
+`
+rviz2 -d src/ros2_kortex_vision/launch/camera_streams.rviz
+`
+
+This allows the visualization of both the RGB and the depth streams as well as the RGB point cloud.
 
 ### Specifying launch options
 It's possible to override the default argument values when launching the **kinova_vision** node.
