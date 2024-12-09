@@ -35,7 +35,7 @@ cd ~/colcon_ws/src/
 ```
 2. Clone this git repo into `~/colcon_ws/src`
 ```bash
-git clone -b ros2 https://github.com/PickNikRobotics/ros2_kortex_vision.git
+git clone https://github.com/Kinovarobotics/ros2_kortex_vision.git
 ```
 ```bash
 cd ~/colcon_ws/
