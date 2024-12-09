@@ -66,9 +66,9 @@ Please note that establishing a connection between the computer and the camera m
 
 Start rviz using the following command:
 
-`
+```
 rviz2 -d src/ros2_kortex_vision/launch/camera_streams.rviz
-`
+```
 
 This allows the visualization of both the RGB and the depth streams as well as the RGB point cloud.
 
@@ -184,7 +184,13 @@ None
 ### camera_nodelet_manager
 
 This node uses the [image_proc] package to create a nodelet graph, transforming raw data from the device driver into point clouds, rectified images, and other products suitable for processing and visualization.
-To include these,
+First, make sure to install the `image_proc` ROS2 package on your system using the following command:
+
+```bash
+sudo apt install ros-$ROS_DISTRO-depth-image-proc
+```
+
+Then, start the launch file with the `depth_registration` argument set to `true`
 
 ```bash
 ros2 launch kinova_vision kinova_vision.launch.py depth_registration:=true
