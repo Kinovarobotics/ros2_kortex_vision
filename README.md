@@ -47,14 +47,14 @@ colcon build
 
 ### Start kinova_vision node
 ```bash
-source ~/colcon_ws/setup.bash
+source ~/colcon_ws/install/setup.bash
 ros2 launch kinova_vision kinova_vision.launch.py 
 ```
 The launch file provides arguments for launching depth, color, or registered depth images, as well as overriding other parameters.
 For example, to only launch the color node,
 
 ```bash
-source ~/colcon_ws/setup.bash
+source ~/colcon_ws/install/setup.bash
 ros2 launch kinova_vision kinova_vision.launch.py launch_depth:=false
 ```
 
