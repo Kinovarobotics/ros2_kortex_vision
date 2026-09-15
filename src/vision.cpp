@@ -526,6 +526,12 @@ void Vision::run()
     throw std::runtime_error("Failed to configure kinova vision node!");
   }
 
+  // One executor for the whole loop. rclcpp::spin_some(node_) built a temporary executor on
+  // every iteration; if shutdown arrived in between, creating it threw RCLError
+  // ("failed to create guard condition") and the process aborted with exit code -6.
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(node_);
+
   while (rclcpp::ok() && !quit_requested_)
   {
     if (!is_started_)
@@ -562,8 +568,26 @@ void Vision::run()
         stop();
       }
     }
-    rclcpp::spin_some(node_);
-    max_pub_rate_->sleep();
+    // spin_some() and Rate::sleep() both throw once the context is shut down (RCLError
+    // "failed to create guard condition" / "context cannot be slept with because it's
+    // invalid"); RCLError derives from std::runtime_error. Only swallow them on shutdown.
+    try
+    {
+      executor.spin_some();
+      max_pub_rate_->sleep();
+    }
+    catch (const std::runtime_error&)
+    {
+      if (rclcpp::ok())
+      {
+        throw;
+      }
+      break;  // context shut down mid-iteration: leave the loop and tear down
+    }
   }
+
+  // Take the pipeline to NULL so rtspsrc closes the RTSP session with the camera.
+  // Without this, the camera kept refusing new streams for several seconds after exit.
+  stop();
 }
 }  // namespace ros_kortex_vision
